@@ -5,7 +5,7 @@ int login_viatura (){
     int opt, cod , qpm;
     printf ("qual seu modelo de viatura? ");
     printf ("\nPolicia Regular - 1");
-    printf ("\nPolicia Especializada - 2");
+    printf ("\nPolicia Especializada - 2\n");
     scanf ("%d", &opt);
     FILE *farq;
 
@@ -23,7 +23,7 @@ int login_viatura (){
             printf ("achou...");
         }
         do {
-            printf ("Informe a quantidade de PMs:");
+            printf ("\nInforme a quantidade de PMs:");
             scanf ("%d", &qpm);
             if (qpm <2 || qpm >4 ){
                 printf ("autorizacao de embarque negada, informe novamente a quantidade de PMs");
