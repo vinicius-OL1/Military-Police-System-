@@ -1,0 +1,2 @@
+/*colocar as funcoes*/
+
