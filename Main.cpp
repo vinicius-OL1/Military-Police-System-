@@ -17,7 +17,7 @@ int main (){
 
         if(op == 1)
         {
-          printf ("vasco");
+          login_viatura();
         }
         /*
         else if(op == 2)
