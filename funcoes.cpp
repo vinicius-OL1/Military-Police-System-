@@ -3,6 +3,7 @@
 
 int login_viatura (){
     int opt, cod , qpm;
+    char iden[50];
     printf ("qual seu modelo de viatura? ");
     printf ("\nPolicia Regular - 1");
     printf ("\nPolicia Especializada - 2\n");
@@ -22,14 +23,15 @@ int login_viatura (){
         if (cod == fgetc(farq)){
             printf ("achou...");
         }
-        do {
-            printf ("\nInforme a quantidade de PMs:");
-            scanf ("%d", &qpm);
-            if (qpm <2 || qpm >4 ){
-                printf ("autorizacao de embarque negada, informe novamente a quantidade de PMs");
+        printf ("\nInforme a quantidade de PMs:");
+        scanf ("%d", &qpm);
+        if (qpm < 2 && qpm < 4){
+            printf("autorizacao de embarque negada:");
+            return(0);
             }
-        }
-        while (2<=qpm<=4);
+        printf("informe a indentidade dos PMs: ");
+        scanf (" %c", iden);
+        
 
     }
     return (0);
