@@ -3,27 +3,45 @@
 #include <string.h>
 #include <stdlib.h>
 
-void login_viatura (){
-    int opt , qpm,cod;
-    char iden[50], codv[50];
-    printf ("qual seu modelo de viatura? ");
+int login_viatura (){
+    int opt , qpm, cod, aut;
+    char iden[100], codv[50];
     printf ("\nPolicia Regular - 1");
     printf ("\nPolicia Especializada - 2\n");
+    printf ("\nqual seu modelo de viatura? ");
     scanf ("%d", &opt);
-
     if (opt == 1){
         printf("Informe o codigo da viatura: ");
         scanf (" %d", &cod);
-        lerviatura(cod);
-        printf ("\nInforme a quantidade de PMs:");
+        if(lerviatura(cod) == 1){
+            printf("\nautorizacao de embarque concedida");
+            printf ("\nInforme a quantidade de PMs:");
         scanf ("%d", &qpm);
         if (qpm < 2 && qpm < 4){
-            printf("autorizacao de embarque negada:");
+            printf("\nautorizacao de embarque negada:");
+            return 0;
             }
-        printf("informe a indentidade dos PMs: ");
+        else{
+        printf("\ninforme a indentidade dos PMs: ");
         scanf (" %c", iden);
+        printf("\n1-Apto para ocorrencia ");
+        printf("\n2-cancelar embarcaçao\n");
+        scanf (" %d", &aut);
+        if (opt == 1){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
         
      }
+        }
+        else{
+            printf("autorizacao de embarque negada");
+        }
+
+       
    
 }
 int lerviatura(int num) {

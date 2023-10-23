@@ -2,10 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+struct policia
+{
+	int idade;
+	char nome[100];
+	policia *prox;
+};
 
 
 int main (){
-  
+    policia *lista = NULL;
     int op;
     do{
 
