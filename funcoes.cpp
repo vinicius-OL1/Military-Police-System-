@@ -31,7 +31,7 @@ int login_viatura (policia *&lista){
         printf("\n1-Apto para ocorrencia ");
         printf("\n2-cancelar embarcaçao\n");
         scanf (" %d", &aut);
-        if (opt == 1){
+        if (aut == 1){
             return 1;
         }
         else{
@@ -64,11 +64,16 @@ int login_viatura (policia *&lista){
         printf("\n1-Apto para ocorrencia ");
         printf("\n2-cancelar embarcaçao\n");
         scanf (" %d", &aut);
-        return 3;
+         if (aut == 1){
+            return 1;
+        }
+        else{
+            return 0;
+        }
             }
         }
     }
-}
+}   
 int lerviatura(int num){
     FILE *fp;
     char str[100];
