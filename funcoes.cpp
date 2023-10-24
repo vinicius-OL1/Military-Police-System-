@@ -38,33 +38,53 @@ int login_viatura (policia *&lista){
             return 0;
         }
     }
-        
      }
         }
+        else if (opt == 2){
+            printf("Informe o codigo da viatura: ");
+            scanf ("%d", &cod);
+            if(lerviatura(cod) == 1){
+                printf("\nautorizacao de embarque concedida");
+                printf ("\nInforme a quantidade de PMs:");
+                scanf ("%d", &qpm);
+                printf("\nautorizacao de embarque concedida");
+                printf ("\nInforme a quantidade de PMs:");
+                scanf ("%d", &qpm);
+                if (qpm != 4){
+                    printf("\nautorizacao de embarque negada:");
+                    return 0;
+            }
         else{
-            printf("autorizacao de embarque negada");
+            for (i = qpm; i > 0; i--){
+        printf("\ninforme a indentidade do PMs: ");
+        scanf (" %s", iden);
+        inserir(iden, lista);
         }
+        imprimir(lista);
+        printf("\n1-Apto para ocorrencia ");
+        printf("\n2-cancelar embarcaçao\n");
+        scanf (" %d", &aut);
+        return 3;
+            }
+        }
+    }
 }
-int lerviatura(int num) {
+int lerviatura(int num){
     FILE *fp;
     char str[100];
     int found = 0;
-
     fp = fopen("viaturas.txt", "r");
     if (fp == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return -1;
     }
-
     while (fgets(str, 100, fp) != NULL) {
         if (num == atoi(str)) {
             found = 1;
             break;
         }
     }
-
     fclose(fp);
-
     if (found) {
         printf("O número %d foi encontrado no arquivo.\n", num);
         return 1;
@@ -73,18 +93,16 @@ int lerviatura(int num) {
         return 0;
     }
 }
-void inserir(char *nome, policia *&L)
-{
+
+void inserir(char *nome, policia *&L){
 	policia *novo;
 	novo = (policia*) malloc(sizeof(policia));
 	strcpy(novo->nome, nome);
 	novo->prox = L;
 	L = novo;
-
-	
 }
-void imprimir(policia *lst)
-{
+
+void imprimir(policia *lst){
     policia *p;
     for(p = lst; p != NULL; p = p->prox)
         printf("%s ", p->nome);
