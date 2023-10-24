@@ -3,13 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <string>
-struct policia
-{
-	int idade;
-	char nome[100];
-	policia *prox;
-};
-
+#define Max 30
 
 int main (){
     policia *lista = NULL;
@@ -27,7 +21,7 @@ int main (){
 
         if(op == 1)
         {
-          login_viatura();
+          login_viatura(lista);
         }
         /*
         else if(op == 2)
