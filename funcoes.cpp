@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define MAX_NAME_LENGTH 50
+#define MAX_NAMES 10
 
-int login_viatura (policia *&lista){
-    int opt , qpm, cod, aut, i;
+int login_viatura (policia *&lista,int codi){
+    int opt , qpm, cod, aut;
     char iden[100], codv[50];
     printf ("\nPolicia Regular - 1");
     printf ("\nPolicia Especializada - 2\n");
@@ -22,18 +24,22 @@ int login_viatura (policia *&lista){
             return 0;
             }
         else{
-            for (i = qpm; i > 0; i--){
         printf("\ninforme a indentidade do PMs: ");
         scanf (" %s", iden);
-        inserir(iden, lista);
-        }
+        inserir(cod,iden, lista);
         imprimir(lista);
         printf("\n1-Apto para ocorrencia ");
         printf("\n2-cancelar embarcaçao\n");
         scanf (" %d", &aut);
         if (aut == 1){
-            return 1;
-        }
+            printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
+            printf(">1 - voltar ao menu principal\n");
+            scanf (" %d", &aut);
+            if (aut == 1){
+                codi = cod;
+                return 1;
+            }
+        }   
         else{
             return 0;
         }
@@ -53,13 +59,11 @@ int login_viatura (policia *&lista){
                 if (qpm != 4){
                     printf("\nautorizacao de embarque negada:");
                     return 0;
-            }
+                    }
         else{
-            for (i = qpm; i > 0; i--){
         printf("\ninforme a indentidade do PMs: ");
         scanf (" %s", iden);
-        inserir(iden, lista);
-        }
+        inserir(cod,iden, lista);
         imprimir(lista);
         printf("\n1-Apto para ocorrencia ");
         printf("\n2-cancelar embarcaçao\n");
@@ -73,7 +77,7 @@ int login_viatura (policia *&lista){
             }
         }
     }
-}   
+}  
 int lerviatura(int num){
     FILE *fp;
     char str[100];
@@ -99,9 +103,10 @@ int lerviatura(int num){
     }
 }
 
-void inserir(char *nome, policia *&L){
+void inserir(int n_v,char *nome, policia *&L){
 	policia *novo;
 	novo = (policia*) malloc(sizeof(policia));
+    novo->n_v = n_v;
 	strcpy(novo->nome, nome);
 	novo->prox = L;
 	L = novo;
@@ -109,7 +114,25 @@ void inserir(char *nome, policia *&L){
 
 void imprimir(policia *lst){
     policia *p;
-    for(p = lst; p != NULL; p = p->prox)
+    for(p = lst; p != NULL; p = p->prox){
+        printf("%d ", p->n_v);
         printf("%s ", p->nome);
+    }
+        
 
+
+}
+int viatura_em_uso(policia *lista, int codi){
+    int vias;
+    printf ("%d", codi);
+    printf("identificador da viatura: ");
+    scanf("%d", &vias);
+    if (vias == codi){
+        printf("viatura em uso");
+        return 1;
+    }
+    else{
+        printf("viatura nao em uso");
+        return 0;
+    }
 }
