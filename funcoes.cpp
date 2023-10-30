@@ -27,6 +27,9 @@ int login_viatura (policia *&lista,int codi){
         printf("\ninforme a indentidade do PMs: ");
         scanf (" %s", iden);
         inserir(cod,iden, lista);
+        if(busca_nome(lista,iden) == 1){
+            printf("PM ja embarcado");
+        }
         imprimir(lista);
         printf("\n1-Apto para ocorrencia ");
         printf("\n2-cancelar embarcaçao\n");
@@ -135,4 +138,24 @@ int viatura_em_uso(policia *lista, int codi){
         printf("viatura nao em uso");
         return 0;
     }
+}
+int busca_nome(policia *lista, char *nome){
+
+    /*faca com que a funcao verifique se os nomes da *lista estao presente no txt*/
+    FILE *fp;
+    char str[100];
+    int found = 0;
+    fp = fopen("policiais.txt", "r");
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return -1;
+    }
+    while (fgets(str, 100, fp) != NULL) {
+        if (nome == str) {
+            found = 1;
+            return 1;
+            break;
+        }
+    }
+    fclose(fp);
 }
