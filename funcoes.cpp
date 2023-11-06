@@ -18,51 +18,49 @@ int login_viatura (policia *&lista,int codi){
         if(lerviatura(cod) == 1){
             printf("\nautorizacao de embarque concedida");
             printf ("\nInforme a quantidade de PMs:");
-        scanf ("%d", &qpm);
-        if (qpm < 2 && qpm < 4){
-            printf("\nautorizacao de embarque negada:");
+            scanf ("%d", &qpm);
+            if (qpm < 2 && qpm < 4){
+                printf("\nautorizacao de embarque negada:");
             return 0;
             }
-        else{
-        printf("\ninforme a indentidade do PMs: ");
-        scanf (" %s", iden);
-        inserir(cod,iden, lista);
-        if(busca_nome(lista,iden) == 1){
-            printf("PM ja embarcado");
-        }
-        imprimir(lista);
-        printf("\n1-Apto para ocorrencia ");
-        printf("\n2-cancelar embarcaçao\n");
-        scanf (" %d", &aut);
-        if (aut == 1){
-            printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
-            printf(">1 - voltar ao menu principal\n");
-            scanf (" %d", &aut);
-            if (aut == 1){
-                codi = cod;
-                return 1;
-            }
-        }   
-        else{
-            return 0;
-        }
-    }
-     }
-        }
-        else if (opt == 2){
-            printf("Informe o codigo da viatura: ");
-            scanf ("%d", &cod);
-            if(lerviatura(cod) == 1){
-                printf("\nautorizacao de embarque concedida");
-                printf ("\nInforme a quantidade de PMs:");
-                scanf ("%d", &qpm);
-                printf("\nautorizacao de embarque concedida");
-                printf ("\nInforme a quantidade de PMs:");
-                scanf ("%d", &qpm);
-                if (qpm != 4){
-                    printf("\nautorizacao de embarque negada:");
-                    return 0;
+            else{
+                printf("\ninforme a indentidade do PMs: ");
+                scanf (" %s", iden);
+                inserir(cod,iden, lista);
+                busca_nome(lista,iden);
+                imprimir(lista);
+                printf("\n1-Apto para ocorrencia ");
+                printf("\n2-cancelar embarcaçao\n");
+                scanf (" %d", &aut);
+                if (aut == 1){
+                    printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
+                    printf(">1 - voltar ao menu principal\n");
+                    scanf (" %d", &aut);
+                    if (aut == 1){
+                        codi = cod;
+                        return 1;
                     }
+                }   
+                else{
+                    return 0;
+                }
+            }
+        }
+        }
+    else if (opt == 2){
+        printf("Informe o codigo da viatura: ");
+        scanf ("%d", &cod);
+        if(lerviatura(cod) == 1){
+            printf("\nautorizacao de embarque concedida");
+            printf ("\nInforme a quantidade de PMs:");
+            scanf ("%d", &qpm);
+            printf("\nautorizacao de embarque concedida");
+            printf ("\nInforme a quantidade de PMs:");
+            scanf ("%d", &qpm);
+            if (qpm != 4){
+                printf("\nautorizacao de embarque negada:");
+                return 0;
+                }
         else{
         printf("\ninforme a indentidade do PMs: ");
         scanf (" %s", iden);
@@ -73,10 +71,10 @@ int login_viatura (policia *&lista,int codi){
         scanf (" %d", &aut);
          if (aut == 1){
             return 1;
-        }
+         }
         else{
             return 0;
-        }
+         }
             }
         }
     }
@@ -118,7 +116,7 @@ void inserir(int n_v,char *nome, policia *&L){
 void imprimir(policia *lst){
     policia *p;
     for(p = lst; p != NULL; p = p->prox){
-        printf("%d ", p->n_v);
+
         printf("%s ", p->nome);
     }
         
@@ -141,21 +139,36 @@ int viatura_em_uso(policia *lista, int codi){
 }
 int busca_nome(policia *lista, char *nome){
 
-    /*faca com que a funcao verifique se os nomes da *lista estao presente no txt*/
+    policia *p;
     FILE *fp;
+    char aux[100];
+    char name[50];
     char str[100];
-    int found = 0;
+    int found;
     fp = fopen("policiais.txt", "r");
     if (fp == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return -1;
     }
+    for(p = lista; p != NULL; p = p->prox){
+        printf("esse e o nome %s\n ", p->nome);
+        strcpy(name, p->nome);
+        printf("esse e o name %s\n ", name);
+        rewind(fp);
     while (fgets(str, 100, fp) != NULL) {
-        if (nome == str) {
+        strtok(str, "\n");
+        if (strcmp(name, str) == 0) {
             found = 1;
-            return 1;
             break;
         }
     }
+}
     fclose(fp);
+    if (found == 1 ) {
+        printf("O nome %s foi encontrado no arquivo.", nome);
+        return 1;
+    } else {
+        printf("O nome %s não foi encontrado no arquivo.\n", nome);
+        return 0;
+    }
 }

@@ -4,6 +4,8 @@
 #include <string.h>
 #include <string>
 #define Max 100
+#define MAX_NAME_LENGTH 50
+#define MAX_NAMES 10
 
 int main (){
     policia *lista = NULL;
@@ -25,11 +27,12 @@ int main (){
         else if(op == 2){
           viatura_em_uso(lista,cod);
         }
-        /*
-        else if(op == 3)
+        
+        else if(op == 7)
         {
-       
+            imprimir(lista);
         }
+        /*
    
         }
     
