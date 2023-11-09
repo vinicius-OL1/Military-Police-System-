@@ -8,8 +8,18 @@ struct policia{
     char estado[Max+1];
 	policia *prox;
 };
+struct policial {
+    char nome[50];
+    char cpf[50];
+    char nome_de_guerra[10];
+    char cidade[20];
+    int idade;
+    char patente[20];
+    char senha[20];
+    policial *prox; 
+} ;
 
-int login_viatura (policia *&lista,int codi);
+int login_viatura (policial *&lst,policia *&lista,int codi);
 
 int lerviatura(int num);
 
@@ -19,4 +29,4 @@ void imprimir(policia *lst);
 
 int viatura_em_uso(policia *lista, int codi);
 
-int busca_nome(policia *lista, char *nome);
+int busca_nome(policial *lista, char *nome);

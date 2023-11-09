@@ -9,6 +9,7 @@
 
 int main (){
     policia *lista = NULL;
+    policial *lst = NULL;
     int op,cod = 0;
     do{
         printf("\n\n1 - viatura login");
@@ -22,7 +23,7 @@ int main (){
         scanf("%d", &op);
 
         if(op == 1){
-          login_viatura(lista,cod);
+          login_viatura(lst,lista,cod);
         }
         else if(op == 2){
           viatura_em_uso(lista,cod);
