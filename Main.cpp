@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string>
 #define Max 100
 #define MAX_NAME_LENGTH 50
 #define MAX_NAMES 10
@@ -10,6 +9,11 @@
 int main (){
     policia *lista = NULL;
     policial *lst = NULL;
+    caso_norm *l_n_i = NULL;
+    caso_norm *l_n_f = NULL;
+    caso_esp *l_e_i = NULL;
+    caso_esp *l_e_f = NULL;
+
     int op,cod = 0;
     do{
         printf("\n\n1 - viatura login");
@@ -23,11 +27,19 @@ int main (){
         scanf("%d", &op);
 
         if(op == 1){
-          login_viatura(lst,lista,cod);
+          criar_viatura(lst,lista,cod);
+          imprimir(lista);
         }
         else if(op == 2){
-          viatura_em_uso(lista,cod);
+          viatura_em_uso(lista,l_n_i,l_e_i);
         }
+        else if (op==3){
+          criar_chamada(lst,l_n_i,l_n_f,l_e_i,l_e_f);
+        }
+        else if (op==4){
+          login_PM(lst);
+        }
+        
         
         else if(op == 7)
         {

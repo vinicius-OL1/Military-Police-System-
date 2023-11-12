@@ -54,12 +54,11 @@ policial *ler_arquivo(char *nome_arquivo) {
     return lista; // retorna a lista de policiais
 }
 
-int login_viatura (policial *&lst,policia *&lista,int codi){
+int criar_viatura (policial *&lst,policia *&lista,int codi){
     char arq[20] = "policiais.txt";
-    printf("arquivo: %s\n", arq);
     policial *lista_policial = ler_arquivo(arq);
     int opt , qpm, cod, aut;
-    char iden[100], codv[50];
+    char iden[100];
     printf ("\nPolicia Regular - 1");
     printf ("\nPolicia Especializada - 2\n");
     printf ("\nqual seu modelo de viatura? ");
@@ -77,25 +76,31 @@ int login_viatura (policial *&lst,policia *&lista,int codi){
             }
             else{
                 printf("\ninforme a indentidade do PMs: ");
-                scanf (" %s", iden);
-                inserir(cod,iden, lista);
-                busca_nome(lista_policial,iden);
-                imprimir(lista);
-                printf("\n1-Apto para ocorrencia ");
-                printf("\n2-cancelar embarcaçao\n");
-                scanf (" %d", &aut);
-                if (aut == 1){
-                    printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
-                    printf(">1 - voltar ao menu principal\n");
+                scanf (" %[^\n]", iden);
+                printf("%s\n", iden);
+                if (busca_nome(qpm,lista_policial,iden)== 1){
+                    inserir(cod,iden, lista,opt);
+                    printf("\n1-Apto para ocorrencia ");
+                    printf("\n2-cancelar embarcaçao\n");
                     scanf (" %d", &aut);
                     if (aut == 1){
-                        codi = cod;
-                        return 1;
+                        printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
+                        printf(">1 - voltar ao menu principal\n");
+                        scanf (" %d", &aut);
+                        if (aut == 1){
+                            codi = cod;
+                            return 1;
                     }
-                }   
+                }
                 else{
                     return 0;
                 }
+               
+                }  
+                 else{
+                    return 0;
+                 } 
+                
             }
         }
         }
@@ -106,28 +111,39 @@ int login_viatura (policial *&lst,policia *&lista,int codi){
             printf("\nautorizacao de embarque concedida");
             printf ("\nInforme a quantidade de PMs:");
             scanf ("%d", &qpm);
-            printf("\nautorizacao de embarque concedida");
-            printf ("\nInforme a quantidade de PMs:");
-            scanf ("%d", &qpm);
             if (qpm != 4){
                 printf("\nautorizacao de embarque negada:");
                 return 0;
                 }
         else{
         printf("\ninforme a indentidade do PMs: ");
-        scanf (" %s", iden);
-        inserir(cod,iden, lista);
-        imprimir(lista);
-        printf("\n1-Apto para ocorrencia ");
-        printf("\n2-cancelar embarcaçao\n");
-        scanf (" %d", &aut);
-         if (aut == 1){
+        scanf (" %[^\n]", iden);
+        if (busca_nome(qpm,lista_policial,iden)== 1){
+            inserir(cod,iden, lista,opt);
+            printf("\n1-Apto para ocorrencia ");
+            printf("\n2-cancelar embarcaçao\n");
+            scanf (" %d", &aut);
+            if (aut == 1){
+                printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
+                printf(">1 - voltar ao menu principal\n");
+                scanf (" %d", &aut);
+                if (aut == 1){
+                    codi = cod;
+                    return 1;
             return 1;
          }
         else{
             return 0;
+        }
          }
+         else{
+             return 0;
             }
+        }
+            else {
+                return 0;
+            }
+        }
         }
     }
 }  
@@ -156,10 +172,11 @@ int lerviatura(int num){
     }
 }
 
-void inserir(int n_v,char *nome, policia *&L){
+void inserir(int n_v,char *nome, policia *&L, int opt){
 	policia *novo;
 	novo = (policia*) malloc(sizeof(policia));
     novo->n_v = n_v;
+    novo->tip = opt;
 	strcpy(novo->nome, nome);
 	novo->prox = L;
 	L = novo;
@@ -170,47 +187,84 @@ void imprimir(policia *lst){
     for(p = lst; p != NULL; p = p->prox){
 
         printf("%s ", p->nome);
+        printf("%d\n", p->n_v);
     }
-        
-
-
 }
-int viatura_em_uso(policia *lista, int codi){
+int viatura_em_uso(policia *lst,caso_norm *f, caso_esp *g){
     int vias;
-    printf ("%d", codi);
     printf("identificador da viatura: ");
     scanf("%d", &vias);
-    if (vias == codi){
-        printf("viatura em uso");
-        return 1;
+    for (policia *p = lst; p != NULL; p = p->prox){
+        printf("%d\n", p->n_v);
+    if (p->n_v == vias){
+
+        alt_estado(lst,f);
     }
-    else{
         printf("viatura nao em uso");
         return 0;
     }
 }
-int busca_nome(policial *lista, char *nome){
-policial *p;
-int found = 0; // variável para armazenar o resultado
-char *token = strtok(nome, " "); // primeiro token
-while (token != NULL) { // loop para percorrer todos os tokens
-    for(p = lista; p != NULL; p = p->prox){
-        if (strcmp(p->nome_de_guerra, token) == 0){
-            printf("O nome %s foi encontrado no arquivo.\n", token);
-            found = 1; // atualiza o resultado
-            break; // sai do loop interno
+
+int busca_nome(int qpm,policial *lista, char *nome){ 
+    policial *l;
+    printf("%s\n", nome);
+    char buffer [100];
+    int found = 0; // variável para armazenar o resultado
+    strcpy(buffer, nome);
+    char *token = strtok(buffer, " ,\n"); // primeiro token
+    while (token != NULL) {
+        printf ("%s\n", token);
+        char *aux = token;
+        
+       for(l = lista; l != NULL; l = l->prox){
+            if (strcmp(l->nome_de_guerra, aux) == 0){
+                printf("O nome %s foi encontrado no arquivo.\n", aux);
+                found +=1; // atualiza o resultado
+                break; // sai do loop interno
+            }
+        }
+    token = strtok (NULL, " ,\n"); // próximo token
+    
+    }
+    if (found != qpm) { // se nenhum nome foi encontrado
+        printf("Os nomes de guerra nao conferem.\n");
+        return 0;
+    }
+    else{
+        printf("Os nomes de guerra conferem.\n");
+        return 1;
+    }
+// retorna o resultado
+}
+void alt_estado(policia *l, caso_norm *f) {
+    // Percorre a lista até encontrar um elemento com estado NULL
+    while (l != NULL && (l->estado != NULL && l->tip == 1)) {
+        l = l->prox;
+    }
+    // Se encontrou um elemento com estado NULL
+    if (l != NULL) {
+        // Verifica se a fila não está vazia
+        if (f != NULL) {
+            // Imprime a descrição e o local do primeiro elemento da fila
+            printf("Descricao: %s\n", f->descricao);
+            printf("Local: %s\n", f->local);
+            // Remove o primeiro elemento da fila
+            caso_norm *aux = f;
+            f = f->prox;
+            free(aux);
         }
     }
-    token = strtok(NULL, " "); // próximo token
-}
-if (found == 0) { // se nenhum nome foi encontrado
-    printf("O nome %s não foi encontrado no arquivo.\n", nome);
-}
-return found; // retorna o resultado
-
 }
 
 
-// Função que lê um arquivo txt e guarda as informações dos policiais em uma lista encadeada
-
+void desalocarF (caso_norm*&L)
+{
+    caso_norm *aux;
+    while(L != NULL)
+    {
+        aux = L;
+        L = L->prox;
+        free(aux);
+    }
+}
 
