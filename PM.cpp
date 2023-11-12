@@ -3,19 +3,27 @@
 #include <string.h>
 #include <stdlib.h>
 
-char criptografar(char c) {
-  if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+void criptografarSenha(char *senha) {
+     int comprimento = strlen(senha);
 
-    c = c + 3;
-    // Se o resultado ultrapassar o limite das letras, voltar ao início
-    if (c > 'Z' && c < 'a') {
-      c = c - 26;
+    for (int i = 0; i < comprimento; i++) {
+        if ((senha[i] >= 'a' && senha[i] <= 'z') || (senha[i] >= 'A' && senha[i] <= 'Z')) {
+            // Adiciona 3 unidades ao valor ASCII de cada letra
+            senha[i] = senha[i] + 3;
+
+            // Se a letra ultrapassar 'z' ou 'Z' após a adição, subtrai 26 para voltar ao alfabeto
+            if ((senha[i] > 'z' && senha[i] <= 'z' + 3) || (senha[i] > 'Z' && senha[i] <= 'Z' + 3)) {
+                senha[i] -= 26;
+            }
+        }
     }
-    if (c > 'z') {
-      c = c - 26;
+
+    // Inverte a senha
+    for (int i = 0; i < comprimento / 2; i++) {
+        char temp = senha[i];
+        senha[i] = senha[comprimento - i - 1];
+        senha[comprimento - i - 1] = temp;
     }
-  }
-  return c;
 }
 
 int confere(policial *lista, char *nome){ 
@@ -33,6 +41,10 @@ int confere(policial *lista, char *nome){
             if (strcmp(l->nome_de_guerra, aux) == 0){
                 printf("O nome %s foi encontrado no arquivo.\n", aux);
                 return 1;
+            }
+            else {
+                printf("O nome %s não foi encontrado no arquivo.\n", aux);
+                return 0;
             }
             
     token = strtok (NULL, " ,\n");
@@ -58,7 +70,6 @@ int confere_senha(policial *lista, char *nome,char *senha){
         char *aux2 = token2;
        for(l = lista; l != NULL; l = l->prox){
             if (strcmp(l->senha, aux)==0 && strcmp(l->nome_de_guerra, aux2 ) == 0){
-                printf("O nome %s foi encontrado no arquivo.\n", aux);
                 return 1;
             }
         }
@@ -71,30 +82,27 @@ int confere_senha(policial *lista, char *nome,char *senha){
 
 int login_PM (policial *lst){
     char arq[20] = "policiais.txt";
+    char senha[20];
     policial *lista_policial = ler_arquivo(arq);
+    policial *p;
     printf("Digite o nome de guerra: ");
     char nome_de_guerra[50];
     scanf("%s", nome_de_guerra);
 
         if (confere(lista_policial, nome_de_guerra) == 1){
-            printf("O nome %s foi encontrado no arquivo.\n", nome_de_guerra);
             printf ("Digite a senha: ");
-            char senha[20];
             scanf("%s", senha);
-           /* for (int i = 0; i < strlen(senha); i++) {
-                senha[i] = criptografar(senha[i]);
-            }*/
-            printf("%s\n", senha);
+            criptografarSenha(senha);
             if (confere_senha(lista_policial,senha,nome_de_guerra) == 1){
                 printf("A senha %s foi encontrada no arquivo.\n", senha);
+                
                 return 1;
             }
             else {
                 printf("A senha %s não foi encontrada no arquivo.\n", senha);
                 return 0;
             }
-            return 1;
-        }
+            }
         else {
             printf("O nome %s não foi encontrado no arquivo.\n", nome_de_guerra);
             return 0;

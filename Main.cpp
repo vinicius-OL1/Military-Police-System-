@@ -13,7 +13,7 @@ int main (){
     caso_norm *l_n_f = NULL;
     caso_esp *l_e_i = NULL;
     caso_esp *l_e_f = NULL;
-
+    char *poli, *tip, *presos, *descricao, *local;
     int op,cod = 0;
     do{
         printf("\n\n1 - viatura login");
@@ -22,7 +22,7 @@ int main (){
         printf("\n4 - Policia Militar");
         printf("\n5 - Oficial");
         printf("\n6 - Comandante Geral");
-        printf("\n7 - imprimir lista de PMs");
+        printf("\n0 - enserar programa");
         printf("\nOpcao: ");
         scanf("%d", &op);
 
@@ -31,7 +31,7 @@ int main (){
           imprimir(lista);
         }
         else if(op == 2){
-          viatura_em_uso(lista,l_n_i,l_e_i);
+          viatura_em_uso(lista,l_n_i,l_e_i,poli,tip,presos,descricao,local);
         }
         else if (op==3){
           criar_chamada(lst,l_n_i,l_n_f,l_e_i,l_e_f);
@@ -39,11 +39,14 @@ int main (){
         else if (op==4){
           login_PM(lst);
         }
-        
+        else if (op==6){
+          criar_oficio(poli,tip,presos,descricao,local);
+        }
         
         else if(op == 7)
         {
-            imprimir(lista);
+            char arq[20] = "pessoas.txt";
+            pessoa *lista_pess = l_arquivo(arq);
         }
         /*
    
@@ -52,5 +55,11 @@ int main (){
         }
         */
     }while(op != 0);
-    printf ("vasco");
+
+desalocar_lista1(lista);
+desalocar_lista2(lst);
+desalocar_lista3(l_e_i);
+desalocar_lista4(l_n_i);
+return 0;
+
 }

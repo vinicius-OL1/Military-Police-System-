@@ -59,10 +59,11 @@ int criar_viatura (policial *&lst,policia *&lista,int codi){
     policial *lista_policial = ler_arquivo(arq);
     int opt , qpm, cod, aut;
     char iden[100];
+    char estado[10] = "livre";
     printf ("\nPolicia Regular - 1");
     printf ("\nPolicia Especializada - 2\n");
     printf ("\nqual seu modelo de viatura? ");
-    scanf ("%d", &opt);
+    scanf ("%d", &opt);;  
     if (opt == 1){
         printf("Informe o codigo da viatura: ");
         scanf ("%d", &cod);
@@ -79,11 +80,11 @@ int criar_viatura (policial *&lst,policia *&lista,int codi){
                 scanf (" %[^\n]", iden);
                 printf("%s\n", iden);
                 if (busca_nome(qpm,lista_policial,iden)== 1){
-                    inserir(cod,iden, lista,opt);
                     printf("\n1-Apto para ocorrencia ");
                     printf("\n2-cancelar embarcaçao\n");
                     scanf (" %d", &aut);
                     if (aut == 1){
+                        inserir(cod,iden, lista,opt,estado);
                         printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
                         printf(">1 - voltar ao menu principal\n");
                         scanf (" %d", &aut);
@@ -104,7 +105,7 @@ int criar_viatura (policial *&lst,policia *&lista,int codi){
             }
         }
         }
-    else if (opt == 2){
+    else if (opt == 2){ 
         printf("Informe o codigo da viatura: ");
         scanf ("%d", &cod);
         if(lerviatura(cod) == 1){
@@ -119,11 +120,11 @@ int criar_viatura (policial *&lst,policia *&lista,int codi){
         printf("\ninforme a indentidade do PMs: ");
         scanf (" %[^\n]", iden);
         if (busca_nome(qpm,lista_policial,iden)== 1){
-            inserir(cod,iden, lista,opt);
             printf("\n1-Apto para ocorrencia ");
             printf("\n2-cancelar embarcaçao\n");
             scanf (" %d", &aut);
             if (aut == 1){
+                inserir(cod,iden, lista,opt,estado);
                 printf("viatura direcionada para rondas, no aguardo de chamadas policiais\n");
                 printf(">1 - voltar ao menu principal\n");
                 scanf (" %d", &aut);
@@ -172,11 +173,12 @@ int lerviatura(int num){
     }
 }
 
-void inserir(int n_v,char *nome, policia *&L, int opt){
+void inserir(int n_v,char *nome, policia *&L, int opt, char *estado){
 	policia *novo;
 	novo = (policia*) malloc(sizeof(policia));
     novo->n_v = n_v;
     novo->tip = opt;
+    strcpy(novo->estado, estado);
 	strcpy(novo->nome, nome);
 	novo->prox = L;
 	L = novo;
@@ -188,20 +190,6 @@ void imprimir(policia *lst){
 
         printf("%s ", p->nome);
         printf("%d\n", p->n_v);
-    }
-}
-int viatura_em_uso(policia *lst,caso_norm *f, caso_esp *g){
-    int vias;
-    printf("identificador da viatura: ");
-    scanf("%d", &vias);
-    for (policia *p = lst; p != NULL; p = p->prox){
-        printf("%d\n", p->n_v);
-    if (p->n_v == vias){
-
-        alt_estado(lst,f);
-    }
-        printf("viatura nao em uso");
-        return 0;
     }
 }
 
@@ -235,25 +223,6 @@ int busca_nome(int qpm,policial *lista, char *nome){
         return 1;
     }
 // retorna o resultado
-}
-void alt_estado(policia *l, caso_norm *f) {
-    // Percorre a lista até encontrar um elemento com estado NULL
-    while (l != NULL && (l->estado != NULL && l->tip == 1)) {
-        l = l->prox;
-    }
-    // Se encontrou um elemento com estado NULL
-    if (l != NULL) {
-        // Verifica se a fila não está vazia
-        if (f != NULL) {
-            // Imprime a descrição e o local do primeiro elemento da fila
-            printf("Descricao: %s\n", f->descricao);
-            printf("Local: %s\n", f->local);
-            // Remove o primeiro elemento da fila
-            caso_norm *aux = f;
-            f = f->prox;
-            free(aux);
-        }
-    }
 }
 
 

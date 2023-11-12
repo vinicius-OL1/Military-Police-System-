@@ -20,16 +20,16 @@ void inserir_caso_norm(caso_norm *&l_n_i,caso_norm *&l_n_f,char *descricao, char
     novo = (caso_norm*) malloc(sizeof(caso_norm));
     strcpy(novo->descricao, descricao);
     strcpy(novo->local, local); 
-    // if (verifica(descricao) == 1){
-    //     if (l_n_i == NULL){
-    //         l_n_i = l_n_f = novo;
-    //     }
-    //     else {
-    //         novo->prox = l_n_i;
-    //         l_n_i = novo;
-    //     } 
-    // }
-    // else{
+    if (verifica(descricao) == 1){
+         if (l_n_i == NULL){
+             l_n_i = l_n_f = novo;
+         }
+         else {
+             novo->prox = l_n_i;
+             l_n_i = novo;
+         } 
+     }
+     else{
         if (l_n_i == NULL)
         l_n_i = l_n_f = novo;
     else {
@@ -38,7 +38,7 @@ void inserir_caso_norm(caso_norm *&l_n_i,caso_norm *&l_n_f,char *descricao, char
     }
     }
     
-
+}
 void inserir_caso_esp(caso_esp *&l_n_i,caso_esp *&l_n_f,char *descricao, char *local){
     caso_esp *novo;
     novo = (caso_esp*) malloc(sizeof(caso_esp));
@@ -70,7 +70,7 @@ int criar_chamada(policial *&lst,caso_norm *&lista_norm_i,caso_norm *&lista_norm
     scanf (" %[^\n]", local);
     if (tip == 1){
         inserir_caso_norm(lista_norm_i,lista_norm_f,descricao,local);
-        imprimir_lista(lista_norm_i);
+        //imprimir_lista(lista_norm_i);
         return 1;
     }
     else if (tip == 2){
